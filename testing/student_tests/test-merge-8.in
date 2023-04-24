@@ -1,0 +1,80 @@
+# 8.1 (g.txt) if the contents of both current and given commits are changed, and different from other
+# 8.2.a if deleted in given commit, modified in current commit
+# 8.2.b if deleted in current commit, modified in given commit
+# 8.3 (f.txt) if absent at split point and has different contents in the given and current branches
+
+I definitions.inc
+> init
+<<<
++ g.txt hello.txt
+> add g.txt
+<<<
+> commit "g.txt"
+<<<
+
+> branch other
+<<<
+> checkout other
+<<<
++ g.txt wug.txt
++ f.txt wug.txt
+> add g.txt
+<<<
+> add f.txt
+<<<
+> commit "g wug f wug"
+<<<
+= g.txt wug.txt
+= f.txt wug.txt
+
+> checkout master
+<<<
++ g.txt notwug.txt
++ f.txt notwug.txt
+> add g.txt
+<<<
+> add f.txt
+<<<
+> commit "g notwug f notwug"
+<<<
+> status
+=== Branches ===
+*master
+other
+
+=== Staged Files ===
+
+=== Removed Files ===
+
+=== Modifications Not Staged For Commit ===
+
+=== Untracked Files ===
+
+<<<
+= g.txt notwug.txt
+= f.txt notwug.txt
+
+
+> merge other
+Encountered a merge conflict.
+<<<
+E g.txt
+E f.txt
+> log
+===
+${COMMIT_HEAD}
+Merged development into master.
+
+===
+${COMMIT_HEAD}
+g notwug f notwug
+
+===
+${COMMIT_HEAD}
+g.txt
+
+===
+${COMMIT_HEAD}
+initial commit
+
+<<<*

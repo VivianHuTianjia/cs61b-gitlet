@@ -1,0 +1,86 @@
+# 4. Any files (h.txt) that were not present at split point and
+# present only in "current branch" should remain as they are.
+# 5. Any files (f.txt) that were not present at the split point and
+# present only in "given branch" should be checked out and staged.
+# 6. Any files (g.txt) present at split point, unmodified in current branch,
+# and absent in the given branch should be removed (and untracked).
+# 7. Any files (k.txt) present at split point, unmodified in given branch,
+# and absent in the current branch should remain absent.
+
+I definitions.inc
+> init
+<<<
++ g.txt wug.txt
+> add g.txt
+<<<
++ k.txt notwug.txt
+> add k.txt
+<<<
+> commit "two files"
+<<<
+
+> branch other
+<<<
+> checkout other
+<<<
++ f.txt wug.txt
+> add f.txt
+<<<
+> rm g.txt
+<<<
+> commit "+ f.txt, - g.txt"
+<<<
+
+> checkout master
+<<<
++ h.txt notwug.txt
+> add h.txt
+<<<
+> rm k.txt
+<<<
+> commit "+ h.txt, - k.txt"
+<<<
+> status
+=== Branches ===
+*master
+other
+
+=== Staged Files ===
+
+=== Removed Files ===
+
+=== Modifications Not Staged For Commit ===
+
+=== Untracked Files ===
+
+<<<
+E g.txt
+* f.txt
+E h.txt
+* k.txt
+
+
+> merge other
+<<<
+* g.txt
+= f.txt wug.txt
+= h.txt notwug.txt
+* k.txt
+> log
+===
+${COMMIT_HEAD}
+Merged development into master.
+
+===
+${COMMIT_HEAD}
++ h.txt, - k.txt
+
+===
+${COMMIT_HEAD}
+two files
+
+===
+${COMMIT_HEAD}
+initial commit
+
+<<<*

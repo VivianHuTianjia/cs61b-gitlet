@@ -1,0 +1,69 @@
+# 1. Any file modified in given branch since split point,
+# but not modified in current branch since split point, should be checked out.
+# 2. Any file modified in current branch
+# but not in given branch since the split point should stay as they are.
+I definitions.inc
+> init
+<<<
++ f.txt wug.txt
+> add f.txt
+<<<
+> commit "wug f.txt"
+<<<
+
+> branch other
+<<<
+> checkout other
+<<<
++ f.txt notwug.txt
+> add f.txt
+<<<
+> commit "notwug f.txt"
+<<<
+
+> checkout master
+<<<
++ g.txt wug.txt
+> add g.txt
+<<<
+> commit "add g.txt"
+<<<
+> status
+=== Branches ===
+*master
+other
+
+=== Staged Files ===
+
+=== Removed Files ===
+
+=== Modifications Not Staged For Commit ===
+
+=== Untracked Files ===
+
+<<<
+E f.txt
+
+
+> merge other
+<<<
+= f.txt notwug.txt
+= g.txt wug.txt
+> log
+===
+${COMMIT_HEAD}
+Merged development into master.
+
+===
+${COMMIT_HEAD}
+add g.txt
+
+===
+${COMMIT_HEAD}
+wug f.txt
+
+===
+${COMMIT_HEAD}
+initial commit
+
+<<<*

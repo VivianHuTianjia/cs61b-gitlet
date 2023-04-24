@@ -1,0 +1,44 @@
+# Check that we can check out a previous version.
+I definitions.inc
+> init
+<<<
++ f.txt wug.txt
+> add f.txt
+<<<
++ g.txt wug.txt
+> add g.txt
+<<<
+> commit "added 2 txt's"
+<<<
+> rm f.txt
+<<<
+> status
+=== Branches ===
+*master
+
+=== Staged Files ===
+
+=== Removed Files ===
+f.txt
+
+=== Modifications Not Staged For Commit ===
+
+=== Untracked Files ===
+
+<<<
+> commit "removed f.txt"
+<<<
+> status
+=== Branches ===
+*master
+
+=== Staged Files ===
+
+=== Removed Files ===
+
+=== Modifications Not Staged For Commit ===
+
+=== Untracked Files ===
+
+<<<
+* f.txt

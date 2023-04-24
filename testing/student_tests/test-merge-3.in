@@ -1,0 +1,67 @@
+# 3. Any files modified in both current and
+# given branch in the same way are left unchanged.
+I definitions.inc
+> init
+<<<
++ f.txt wug.txt
+> add f.txt
+<<<
+> commit "wug f.txt"
+<<<
+
+> branch other
+<<<
+> checkout other
+<<<
++ f.txt notwug.txt
+> add f.txt
+<<<
+> commit "notwug f.txt other"
+<<<
+
+> checkout master
+<<<
++ f.txt notwug.txt
+> add f.txt
+<<<
+> commit "notwug f.txt master"
+<<<
+> status
+=== Branches ===
+*master
+other
+
+=== Staged Files ===
+
+=== Removed Files ===
+
+=== Modifications Not Staged For Commit ===
+
+=== Untracked Files ===
+
+<<<
+E f.txt
+= f.txt notwug.txt
+
+
+> merge other
+<<<
+= f.txt notwug.txt
+> log
+===
+${COMMIT_HEAD}
+Merged development into master.
+
+===
+${COMMIT_HEAD}
+notwug f.txt master
+
+===
+${COMMIT_HEAD}
+wug f.txt
+
+===
+${COMMIT_HEAD}
+initial commit
+
+<<<*

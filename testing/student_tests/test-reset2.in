@@ -1,0 +1,130 @@
+# Check that we can check out a previous version.
+I definitions.inc
+> init
+<<<
++ f.txt wug.txt
+> add f.txt
+<<<
++ g.txt notwug.txt
+> add g.txt
+<<<
+> commit "Two files"
+<<<
+
++ h.txt notwug.txt
+> add h.txt
+<<<
+> rm g.txt
+<<<
+> commit "Add h.txt and remove g.txt"
+<<<
+
++ k.txt wug.txt
+> add k.txt
+<<<
+> rm f.txt
+<<<
+> commit "Add k.txt and remove f.txt"
+<<<
+
+> log
+===
+${COMMIT_HEAD}
+Add k.txt and remove f.txt
+
+===
+${COMMIT_HEAD}
+Add h.txt and remove g.txt
+
+===
+${COMMIT_HEAD}
+Two files
+
+===
+${COMMIT_HEAD}
+initial commit
+
+<<<*
+# UID of k/f txt
+D UID3 "${1}"
+# UID of h/g txt
+D UID2 "${2}"
+# UID of two txt
+D UID1 "${3}"
+
+
+> reset ${UID1}
+<<<
+E f.txt
+E g.txt
+= f.txt wug.txt
+= g.txt notwug.txt
+* k.txt
+* h.txt
+> log
+===
+${COMMIT_HEAD}
+Two files
+
+===
+${COMMIT_HEAD}
+initial commit
+
+<<<*
+
+
+> reset abcdebfjksabfiulsfgahsbdfkhabsdhlfbassfasfasvtjyt
+No commit with that id exists.
+<<<
+> reset ${UID2}
+<<<
+> log
+===
+${COMMIT_HEAD}
+Add h.txt and remove g.txt
+
+===
+${COMMIT_HEAD}
+Two files
+
+===
+${COMMIT_HEAD}
+initial commit
+
+<<<*
+E f.txt
+= f.txt wug.txt
+E h.txt
+= h.txt notwug.txt
+* g.txt
+
+
++ k.txt notwug.txt
+> reset ${UID3}
+There is an untracked file in the way; delete it, or add and commit it first.
+<<<
+- k.txt
+> reset ${UID3}
+<<<
+* f.txt
+* g.txt
+= h.txt notwug.txt
+= k.txt wug.txt
+> log
+===
+${COMMIT_HEAD}
+Add k.txt and remove f.txt
+
+===
+${COMMIT_HEAD}
+Add h.txt and remove g.txt
+
+===
+${COMMIT_HEAD}
+Two files
+
+===
+${COMMIT_HEAD}
+initial commit
+
+<<<*

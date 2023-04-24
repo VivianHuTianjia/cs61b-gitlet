@@ -1,0 +1,102 @@
+# Check that we can check out a previous version.
+I definitions.inc
+> init
+<<<
++ f.txt wug.txt
+> add f.txt
+<<<
++ g.txt notwug.txt
+> add g.txt
+<<<
+> commit "added txt"
+<<<
++ f.txt notwug.txt
+> add f.txt
+<<<
+> rm g.txt
+<<<
+> commit "changed txt"
+<<<
+> log
+===
+${COMMIT_HEAD}
+changed txt
+
+===
+${COMMIT_HEAD}
+added txt
+
+===
+${COMMIT_HEAD}
+initial commit
+
+<<<*
+# UID of rm txt
+D UID2 "${1}"
+# UID of add txt
+D UID1 "${2}"
+
+
+> reset ${UID1}
+<<<
+E f.txt
+E g.txt
+= f.txt wug.txt
+= g.txt notwug.txt
+> log
+===
+${COMMIT_HEAD}
+added txt
+
+===
+${COMMIT_HEAD}
+initial commit
+
+<<<*
+
+
+> reset abcdebfjksabfiulsfgahsbdfkhabsdhlfbassfasfasvtjyt
+No commit with that id exists.
+<<<
+> reset ${UID2}
+<<<
+> log
+===
+${COMMIT_HEAD}
+changed txt
+
+===
+${COMMIT_HEAD}
+added txt
+
+===
+${COMMIT_HEAD}
+initial commit
+
+<<<*
+E f.txt
+= f.txt notwug.txt
+* g.txt
+
+
++ g.txt wug.txt
+> reset ${UID1}
+There is an untracked file in the way; delete it, or add and commit it first.
+<<<
+- g.txt
+> reset ${UID1}
+<<<
+E f.txt
+= f.txt wug.txt
+E g.txt
+= g.txt notwug.txt
+> log
+===
+${COMMIT_HEAD}
+added txt
+
+===
+${COMMIT_HEAD}
+initial commit
+
+<<<*

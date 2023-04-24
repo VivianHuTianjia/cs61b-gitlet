@@ -1,0 +1,34 @@
+# Check that we can check out a previous version.
+I definitions.inc
+> init
+<<<
++ f.txt wug.txt
+> add f.txt
+<<<
+> commit "added f.txt"
+<<<
+> rm f.txt
+<<<
+> commit "removed f.txt"
+<<<
+> log
+===
+${COMMIT_HEAD}
+removed f.txt
+
+===
+${COMMIT_HEAD}
+added f.txt
+
+===
+${COMMIT_HEAD}
+initial commit
+
+<<<*
+# UID of rm f.txt
+D UID2 "${1}"
+# UID of add f.txt
+D UID1 "${2}"
+> checkout ${UID1} -- f.txt
+<<<
+E f.txt

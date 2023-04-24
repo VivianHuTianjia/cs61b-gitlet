@@ -1,0 +1,137 @@
+# Check that we can check out a previous version.
+I definitions.inc
+> init
+<<<
++ g.txt notwug.txt
+> add g.txt
+<<<
+> commit "g.txt"
+<<<
+> branch other
+<<<
+> checkout other
+<<<
++ f.txt wug.txt
+> add f.txt
+<<<
+> commit "added f.txt"
+<<<
+> log
+===
+${COMMIT_HEAD}
+added f.txt
+
+===
+${COMMIT_HEAD}
+g.txt
+
+===
+${COMMIT_HEAD}
+initial commit
+
+<<<*
+# UID of other
+D UIDother "${1}"
+# UID of g.txt
+D UIDg "${2}"
+
+> checkout master
+<<<
++ f.txt notwug.txt
+> add f.txt
+<<<
+> rm g.txt
+<<<
+> commit "changed txt"
+<<<
+> log
+===
+${COMMIT_HEAD}
+changed txt
+
+===
+${COMMIT_HEAD}
+g.txt
+
+===
+${COMMIT_HEAD}
+initial commit
+
+<<<*
+# UID of change txt
+D UIDchange "${1}"
+
+
+> reset ${UIDother}
+<<<
+E f.txt
+E g.txt
+= f.txt wug.txt
+= g.txt notwug.txt
+> log
+===
+${COMMIT_HEAD}
+added f.txt
+
+===
+${COMMIT_HEAD}
+g.txt
+
+===
+${COMMIT_HEAD}
+initial commit
+
+<<<*
+
+
+> reset abcdebfjksabfiulsfgahsbdfkhabsdhlfbassfasfasvtjyt
+No commit with that id exists.
+<<<
+> reset ${UIDchange}
+<<<
+> log
+===
+${COMMIT_HEAD}
+changed txt
+
+===
+${COMMIT_HEAD}
+g.txt
+
+===
+${COMMIT_HEAD}
+initial commit
+
+<<<*
+E f.txt
+= f.txt notwug.txt
+* g.txt
+
+
++ g.txt wug.txt
+> reset ${UIDother}
+There is an untracked file in the way; delete it, or add and commit it first.
+<<<
+- g.txt
+> reset ${UIDother}
+<<<
+E f.txt
+= f.txt wug.txt
+E g.txt
+= g.txt notwug.txt
+
+> reset ${UIDg}
+<<<
+* f.txt
+E g.txt
+= g.txt notwug.txt
+> log
+===
+${COMMIT_HEAD}
+g.txt
+
+===
+${COMMIT_HEAD}
+initial commit
+
+<<<*
